@@ -22,3 +22,24 @@
 [submodule "extensions/xssfilter"]
 	path = extensions/xssfilter
 	url = git://github.com/symphonycms/xssfilter.git
+[submodule "extensions/codemirror"]
+	path = extensions/codemirror
+	url = git://github.com/oleae/codemirror.git
+[submodule "extensions/edui"]
+	path = extensions/edui
+	url = git://github.com/eKoeS/edui.git
+[submodule "extensions/html5_doctype"]
+	path = extensions/html5_doctype
+	url = git://github.com/domain7/html5_doctype.git
+[submodule "extensions/numberfield"]
+	path = extensions/numberfield
+	url = git://github.com/symphonycms/numberfield.git
+[submodule "extensions/order_entries"]
+	path = extensions/order_entries
+	url = git://github.com/nickdunn/order_entries.git
+[submodule "extensions/subsectionmanager"]
+	path = extensions/subsectionmanager
+	url = git://github.com/nilshoerrmann/subsectionmanager.git
+[submodule "extensions/textupload"]
+	path = extensions/textupload
+	url = git://github.com/czheng/textupload.git
