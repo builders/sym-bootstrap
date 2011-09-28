@@ -18,16 +18,6 @@ CREATE TABLE `tbl_authors` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- *** STRUCTURE: `tbl_sessions` ***
-DROP TABLE IF EXISTS `tbl_sessions`;
-CREATE TABLE IF NOT EXISTS `tbl_sessions` (
-  `session` varchar(100) NOT NULL,
-  `session_expires` int(10) unsigned NOT NULL default '0',
-  `session_data` text default null,
-  PRIMARY KEY  (`session`),
-  KEY `session_expires` (`session_expires`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 -- *** STRUCTURE: `tbl_cache` ***
 DROP TABLE IF EXISTS `tbl_cache`;
 CREATE TABLE `tbl_cache` (
@@ -39,7 +29,7 @@ CREATE TABLE `tbl_cache` (
   PRIMARY KEY (`id`),
   KEY `expiry` (`expiry`),
   KEY `hash` (`hash`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** STRUCTURE: `tbl_entries` ***
 DROP TABLE IF EXISTS `tbl_entries`;
@@ -128,7 +118,7 @@ CREATE TABLE `tbl_fields_date` (
   `pre_populate` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** STRUCTURE: `tbl_fields_input` ***
 DROP TABLE IF EXISTS `tbl_fields_input`;
@@ -138,6 +128,26 @@ CREATE TABLE `tbl_fields_input` (
   `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_fields_number` ***
+DROP TABLE IF EXISTS `tbl_fields_number`;
+CREATE TABLE `tbl_fields_number` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `field_id` (`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_fields_order_entries` ***
+DROP TABLE IF EXISTS `tbl_fields_order_entries`;
+CREATE TABLE `tbl_fields_order_entries` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  `force_sort` enum('yes','no') COLLATE utf8_unicode_ci DEFAULT 'no',
+  `hide` enum('yes','no') COLLATE utf8_unicode_ci DEFAULT 'no',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** STRUCTURE: `tbl_fields_select` ***
@@ -152,7 +162,62 @@ CREATE TABLE `tbl_fields_select` (
   `dynamic_options` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_fields_selectbox_link` ***
+DROP TABLE IF EXISTS `tbl_fields_selectbox_link`;
+CREATE TABLE `tbl_fields_selectbox_link` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  `allow_multiple_selection` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `show_association` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `related_field_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `limit` int(4) unsigned NOT NULL DEFAULT '20',
+  PRIMARY KEY (`id`),
+  KEY `field_id` (`field_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_fields_stage` ***
+DROP TABLE IF EXISTS `tbl_fields_stage`;
+CREATE TABLE `tbl_fields_stage` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `constructable` smallint(1) DEFAULT '0',
+  `destructable` smallint(1) DEFAULT '0',
+  `draggable` smallint(1) DEFAULT '0',
+  `droppable` smallint(1) DEFAULT '0',
+  `searchable` smallint(1) DEFAULT '0',
+  `context` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_fields_stage_sorting` ***
+DROP TABLE IF EXISTS `tbl_fields_stage_sorting`;
+CREATE TABLE `tbl_fields_stage_sorting` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) NOT NULL,
+  `field_id` int(11) NOT NULL,
+  `order` text COLLATE utf8_unicode_ci,
+  `context` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_fields_subsectionmanager` ***
+DROP TABLE IF EXISTS `tbl_fields_subsectionmanager`;
+CREATE TABLE `tbl_fields_subsectionmanager` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  `subsection_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `filter_tags` text COLLATE utf8_unicode_ci,
+  `caption` text COLLATE utf8_unicode_ci,
+  `droptext` text COLLATE utf8_unicode_ci,
+  `included_fields` text COLLATE utf8_unicode_ci,
+  `allow_multiple` tinyint(1) DEFAULT '0',
+  `show_preview` tinyint(1) DEFAULT '0',
+  `lock` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `field_id` (`field_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** STRUCTURE: `tbl_fields_taglist` ***
 DROP TABLE IF EXISTS `tbl_fields_taglist`;
@@ -177,6 +242,21 @@ CREATE TABLE `tbl_fields_textarea` (
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- *** STRUCTURE: `tbl_fields_textupload` ***
+DROP TABLE IF EXISTS `tbl_fields_textupload`;
+CREATE TABLE `tbl_fields_textupload` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  `file_destination` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `file_validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `text_formatter` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `text_cdata` enum('yes','no') COLLATE utf8_unicode_ci DEFAULT 'no',
+  `text_size` enum('small','medium','large','huge') COLLATE utf8_unicode_ci DEFAULT 'medium',
+  `text_mode` enum('editable','disabled','hidden') COLLATE utf8_unicode_ci DEFAULT 'editable',
+  PRIMARY KEY (`id`),
+  KEY `field_id` (`field_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- *** STRUCTURE: `tbl_fields_upload` ***
 DROP TABLE IF EXISTS `tbl_fields_upload`;
 CREATE TABLE `tbl_fields_upload` (
@@ -186,7 +266,7 @@ CREATE TABLE `tbl_fields_upload` (
   `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** STRUCTURE: `tbl_forgotpass` ***
 DROP TABLE IF EXISTS `tbl_forgotpass`;
@@ -250,3 +330,13 @@ CREATE TABLE `tbl_sections_association` (
   PRIMARY KEY (`id`),
   KEY `parent_section_id` (`parent_section_id`,`child_section_id`,`child_section_field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_sessions` ***
+DROP TABLE IF EXISTS `tbl_sessions`;
+CREATE TABLE `tbl_sessions` (
+  `session` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
+  `session_data` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`session`),
+  KEY `session_expires` (`session_expires`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
