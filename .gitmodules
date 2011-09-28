@@ -43,3 +43,6 @@
 [submodule "extensions/textupload"]
 	path = extensions/textupload
 	url = git://github.com/czheng/textupload.git
+[submodule "workspace"]
+	path = workspace
+	url = git://github.com/symphonists/sym-bootstrap.git
