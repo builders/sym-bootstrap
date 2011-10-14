@@ -6,7 +6,7 @@
 
 		public $dsParamROOTELEMENT = 'subsections';
 		public $dsParamORDER = 'asc';
-		public $dsParamPAGINATERESULTS = 'yes';
+		public $dsParamPAGINATERESULTS = 'no';
 		public $dsParamLIMIT = '20';
 		public $dsParamSTARTPAGE = '1';
 		public $dsParamREDIRECTONEMPTY = 'no';
@@ -37,7 +37,7 @@
 					'website' => 'http://home/sym/bootstrap',
 					'email' => 'bauhouse@gmail.com'),
 				'version' => 'Symphony 2.2.3',
-				'release-date' => '2011-09-27T02:01:15+00:00'
+				'release-date' => '2011-09-29T08:37:21+00:00'
 			);
 		}
 
