@@ -31,6 +31,9 @@
     <div class="sections">
       <div class="area">
         <xsl:apply-templates select="sections/entry" />
+        <!-- ul class="sections">
+          <xsl:apply-templates select="sections-by-section/parent-section[@link-id = '']/entry" />
+        </ul -->
       </div>
     </div>
   </div>
@@ -86,6 +89,7 @@
     <xsl:when test="$index &lt; $columns">
       <div class="section{$grid}" id="{url-handle/@handle}">
         <xsl:if test="display-header = 'Yes'">
+          <xsl:attribute name="class"><xsl:text>section main-section</xsl:text><xsl:value-of select="$grid" /></xsl:attribute>
           <div class="content">
             <div class="page-header">
               <h1><xsl:value-of select="title" />
@@ -157,7 +161,7 @@
   <xsl:param name="index" />
   <xsl:param name="count" />
   <div class="content">
-    <h2><xsl:value-of select="$index" />/<xsl:value-of select="$count" /></h2>
+    <!-- h2><xsl:value-of select="$index" />/<xsl:value-of select="$count" /></h2 -->
     <xsl:apply-templates select="content/*" mode="html" />
   </div>
 </xsl:template>
@@ -210,7 +214,7 @@
 </xsl:template> 
 
 <xsl:template match="entry" mode="content">
-  <div class="content"><xsl:value-of select='text()' /></div>
+  <div class="content"><xsl:apply-templates select="content/*" mode="html" /></div>
 </xsl:template> 
 
 <xsl:template match="entry" mode="first-subsection">
@@ -219,6 +223,28 @@
     <xsl:apply-templates select='following-sibling::item[1]' mode='content' />
     <xsl:apply-templates select='following-sibling::item[2]' mode='content' />
   </div>
+</xsl:template> 
+
+<xsl:template match="parent-section/entry">
+  <li>
+    <xsl:value-of select="title" />
+    <xsl:if test="../../parent-section/@link-id = @id">
+      <ul>
+        <xsl:apply-templates select="../../parent-section[@link-id = current()/@id]/entry" />
+      </ul>
+    </xsl:if>
+    <xsl:if test="/data/subsections/entry/section/item/@id = @id">
+      <ul>
+        <xsl:apply-templates select="/data/subsections/entry[section/item/@id = current()/@id]" mode="list-subsections" />
+      </ul>
+    </xsl:if>
+  </li>
+</xsl:template> 
+
+<xsl:template match="subsections/entry" mode="list-subsections">
+  <li>
+    <xsl:value-of select="title" />
+  </li>
 </xsl:template> 
 
 </xsl:stylesheet>
